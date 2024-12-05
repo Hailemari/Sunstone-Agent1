@@ -1,0 +1,118 @@
+version: "3.1"
+stories:
+  - story: greet and ask about project
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: positive_response
+      - action: utter_positive_response
+
+  - story: deny and ask about project
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: negative_response
+      - action: utter_negative_response
+
+  - story: who are you
+    steps:
+      - intent: who_are_you
+      - action: utter_who_are_you
+
+  - story: what do you want
+    steps:
+      - intent: what_do_you_want
+      - action: utter_what_do_you_want
+
+  - story: not interested
+    steps:
+      - intent: not_interested
+      - action: utter_not_interested
+
+  - story: don't have time
+    steps:
+      - intent: dont_have_time
+      - action: utter_dont_have_time
+
+  - story: too expensive
+    steps:
+      - intent: too_expensive
+      - action: utter_too_expensive
+
+  - story: need to think
+    steps:
+      - intent: need_to_think
+      - action: utter_need_to_think
+
+  - story: send info
+    steps:
+      - intent: send_info
+      - action: utter_send_info
+
+  - story: why calling
+    steps:
+      - intent: why_calling
+      - action: utter_why_calling
+
+  - story: other projects
+    steps:
+      - intent: other_projects
+      - action: utter_other_projects
+
+  - story: don't own business
+    steps:
+      - intent: dont_own_business
+      - action: utter_dont_own_business
+
+  - story: what do you do
+    steps:
+      - intent: what_do_you_do
+      - action: utter_what_do_you_do
+
+  - story: finished video
+    steps:
+      - intent: finished_video
+      - action: utter_finished_video
+
+  - story: select service
+    steps:
+      - intent: select_service
+      - action: utter_service_instructions_computer
+      - action: utter_service_instructions_phone
+      - intent: confirm_service
+      - action: utter_confirm_service
+
+  - story: ask pricing
+    steps:
+      - intent: ask_pricing
+      - action: utter_ask_pricing
+
+  - story: need help with a service
+    steps:
+      - intent: need_help
+      - action: utter_need_help
+
+  - story: task completed and proceed
+    steps:
+      - intent: completed_task
+      - action: utter_completed_task
+
+  - story: pricing after service selection
+    steps:
+      - intent: select_service
+      - action: utter_service_instructions_computer
+      - action: utter_service_instructions_phone
+      - intent: ask_pricing
+      - action: utter_ask_pricing
+
+  - story: schedule a callback
+    steps:
+      - intent: dont_have_time
+      - action: utter_dont_have_time
+      - intent: schedule_callback
+      - action: utter_schedule_callback
+
+  - story: general small talk
+    steps:
+      - intent: general_small_talk
+      - action: utter_general_small_talk

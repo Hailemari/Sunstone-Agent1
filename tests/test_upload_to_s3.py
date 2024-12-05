@@ -22,9 +22,12 @@ class TestUploadToS3(unittest.TestCase):
         # Create a test audio folder
         self.test_audio_folder = "test_audio"
         os.makedirs(self.test_audio_folder, exist_ok=True)
-        self.test_file = os.path.join(self.test_audio_folder, "test.mp3")
-        with open(self.test_file, "w") as f:
-            f.write("This is a test audio file.")
+        self.test_mp3_file = os.path.join(self.test_audio_folder, "test.mp3")
+        self.test_wav_file = os.path.join(self.test_audio_folder, "test.wav")
+        with open(self.test_mp3_file, "w") as f:
+            f.write("This is a test mp3 audio file.")
+        with open(self.test_wav_file, "w") as f:
+            f.write("This is a test wav audio file.")
 
     @mock_aws
     def tearDown(self):
@@ -48,11 +51,12 @@ class TestUploadToS3(unittest.TestCase):
         # Run the upload_audio_files function
         upload_audio_files(self.test_audio_folder)
 
-        # Verify the file was uploaded to S3
+        # Verify the files were uploaded to S3
         response = s3_mock.list_objects_v2(Bucket=S3_BUCKET_NAME)
-        self.assertIn("Contents", response)
+        self.assertIn("ConREADY-TO-RUN AI agenttents", response)
         uploaded_files = [obj["Key"] for obj in response["Contents"]]
         self.assertIn("audio/test.mp3", uploaded_files)
+        self.assertIn("audio/test.wav", uploaded_files)
 
     @mock_aws
     @patch("scripts.upload_to_s3.boto3.client")

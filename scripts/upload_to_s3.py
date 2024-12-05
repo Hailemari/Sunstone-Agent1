@@ -18,7 +18,7 @@ def upload_audio_files(audio_folder):
     # Loop through all files in the audio folder
     for root, _, files in os.walk(audio_folder):
         for file in files:
-            if file.endswith(".mp3"):
+            if file.endswith((".mp3", ".wav")):
                 file_path = os.path.join(root, file)
                 s3_key = f"audio/{file}"  # S3 key (path in bucket)
 

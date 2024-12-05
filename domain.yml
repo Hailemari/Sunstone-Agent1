@@ -1,0 +1,143 @@
+version: "3.1"
+
+intents:
+  - greet
+  - positive_response
+  - negative_response
+  - who_are_you
+  - what_do_you_want
+  - not_interested
+  - dont_have_time
+  - too_expensive
+  - need_to_think
+  - send_info
+  - why_calling
+  - other_projects
+  - dont_own_business
+  - what_do_you_do
+  - finished_video
+  - select_service
+  - need_help
+  - confirm_service
+  - ask_pricing
+  - completed_task
+  - schedule_callback
+  - general_small_talk
+  - gatekeeper
+  - incorrect_number
+  - driving
+  - busy
+  - reschedule
+  - finished_task
+  - inquire_specific_service
+  - end_call
+  - ask_about_business
+  - objection_response
+  - recommend_services
+  - watch_video
+  - pause_conversation
+  - ask_for_expertise
+
+responses:
+  utter_greet:
+    - text: "Hi {lead_name}, this is Marc from Sunstone Digital. How are you?"
+  utter_positive_response:
+    - text: "You recently purchased {lead_website}. Is there a project behind this?"
+  utter_negative_response:
+    - text: "I’m sorry to hear that. You recently purchased {lead_website}. Is there a project behind this?"
+  utter_who_are_you:
+    - text: "I’m calling from Sunstone Digital, a high-performance marketing agency based in New York. We specialize in web design, mobile app development, and digital marketing. What industry are you in?"
+  utter_what_do_you_want:
+    - text: "We noticed you recently purchased {lead_website}. Our aim is to explore if we can assist your business growth."
+  utter_not_interested:
+    - text: "That's understandable, but no business is fully automated. Do you have 30 seconds to explore what we can offer?"
+  utter_dont_have_time:
+    - text: "I get it. When would be a better time to connect? Let’s schedule a quick callback."
+  utter_too_expensive:
+    - text: "Our services are designed to provide high ROI. Let me walk you through flexible pricing options."
+  utter_need_to_think:
+    - text: "Absolutely, I can give you time. Are there specific concerns you’d like me to address?"
+  utter_send_info:
+    - text: "Sure, I’ll email you more details. What’s the best email address to reach you?"
+  utter_why_calling:
+    - text: "We saw you recently purchased {lead_website}. We’d love to see how we can support your business growth."
+  utter_other_projects:
+    - text: "What projects are you working on? Do you have 30 seconds to explore how we might assist?"
+  utter_dont_own_business:
+    - text: "That’s okay! But do you have 30 seconds to check out our offerings?"
+  utter_what_do_you_do:
+    - text: "We’re experts in digital marketing, app development, and web design. What services are you most interested in?"
+  utter_finished_video:
+    - text: "Great! Which service caught your attention?"
+  utter_service_instructions_computer:
+    - text: "On your computer, hover over the SERVICES menu at the top. Let me know what aligns with your needs."
+  utter_service_instructions_phone:
+    - text: "On your phone, click the three lines in the corner and select SERVICES. Let me know which suits your needs."
+  utter_schedule_callback:
+    - text: "No problem. When would be a convenient time for us to reconnect?"
+  utter_general_small_talk:
+    - text: |
+        - "I enjoy staying productive and reading. How about you?"
+        - "Politics? I prefer staying stress-free!"
+        - "What’s your favorite way to relax after a busy day?"
+  utter_gatekeeper:
+    - text: "Could you please connect me with {lead_name}? I’d really appreciate it."
+  utter_incorrect_number:
+    - text: "I apologize for the mistake. Do you happen to know {lead_name}?"
+  utter_driving:
+    - text: "I understand. Can I call you back at a more convenient time?"
+  utter_busy:
+    - text: "No worries. When would be a better time for you?"
+  utter_reschedule:
+    - text: "Let’s lock in another time that works better for you. Does {callback_time} work?"
+  utter_finished_task:
+    - text: "Excellent! Let’s proceed to the next step."
+  utter_inquire_specific_service:
+    - text: "We specialize in web development, SEO, and social media marketing. Which of these sounds like a priority for you?"
+  utter_end_call:
+    - text: "Thank you for your time, {lead_name}. Have a great day!"
+  utter_ask_about_business:
+    - text: "How’s your business performing? Any areas you’d like to improve?"
+  utter_objection_response:
+    - text: "What are the main challenges you’re facing? We’re here to help you overcome them."
+  utter_recommend_services:
+    - text: "Based on your needs, I’d recommend exploring our digital marketing packages."
+  utter_watch_video:
+    - text: "Let’s go through a short video. I’ll stay quiet while you watch it, and we’ll discuss afterward."
+  utter_pause_conversation:
+    - text: "Sure, take your time. Let me know when you’re ready to proceed."
+  utter_ask_for_expertise:
+    - text: "What specific expertise are you looking for in a partner?"
+  utter_need_help:
+    - text: "Of course! What specific assistance do you need?"
+
+slots:
+  lead_name:
+    type: text
+    mappings:
+      - type: from_text
+  lead_website:
+    type: text
+    mappings:
+      - type: from_text
+  selected_service:
+    type: text
+    mappings:
+      - type: from_intent
+        intent: select_service
+        value: selected_service
+  callback_time:
+    type: text
+    mappings:
+      - type: from_text
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+forms:
+  service_selection_form:
+    required_slots:
+      - lead_name
+      - lead_website
+      - selected_service

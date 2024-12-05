@@ -1,0 +1,37 @@
+version: "3.1"
+
+# Core endpoint configuration for Rasa server
+core:
+  url: "http://localhost:5005"
+
+# NLU endpoint configuration for Rasa server
+nlu:
+  url: "http://localhost:5005"
+
+# Action server endpoint
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+
+# Tracker store configuration
+tracker_store:
+  type: "in_memory" # Use in-memory store to avoid external dependencies
+
+# Lock store configuration
+lock_store:
+  type: "in_memory" # Use in-memory store for locking
+
+# Model storage configuration
+model:
+  url: "http://localhost:5005/model"
+  wait_time_between_pulls: 10 # Check for updates every 10 seconds
+
+# Event broker configuration (optional for advanced usage)
+event_broker:
+  type: "file" # Save events to a local file (free option)
+  path: "events.log" # Path to save event logs
+
+# Telephony integration with SignalWire
+signalwire:
+  project_id: "SIGNALWIRE_PROJECT_ID"
+  api_token: "SIGNALWIRE_API_TOKEN"
+  space_url: "SIGNALWIRE_SPACE"

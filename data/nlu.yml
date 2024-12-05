@@ -1,0 +1,292 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - Hello
+      - Hi
+      - Hey
+      - Good morning
+      - Good afternoon
+      - How are you doing?
+      - Hi there
+      - Greetings
+
+  - intent: positive_response
+    examples: |
+      - I'm good
+      - Good
+      - Doing well
+      - I'm fine
+      - Great
+      - Awesome
+      - Perfect
+      - Excellent
+      - Fine, thank you
+
+  - intent: negative_response
+    examples: |
+      - Not good
+      - I've been better
+      - Not great
+      - Bad
+      - Could be better
+      - Terrible
+      - Not okay
+
+  - intent: who_are_you
+    examples: |
+      - Who are you?
+      - May I know who is calling?
+      - Who's this?
+      - What’s your name?
+      - Can you introduce yourself?
+      - Identify yourself
+
+  - intent: what_do_you_want
+    examples: |
+      - What do you want?
+      - Why are you calling?
+      - What is this about?
+
+  - intent: not_interested
+    examples: |
+      - I'm not interested
+      - Not interested
+      - No thanks
+
+  - intent: dont_have_time
+    examples: |
+      - I don't have time
+      - I'm busy
+      - Not now
+
+  - intent: too_expensive
+    examples: |
+      - It's too expensive
+      - Too costly
+      - Can't afford it
+
+  - intent: need_to_think
+    examples: |
+      - I need to think about it
+      - Let me think
+      - I need some time
+
+  - intent: send_info
+    examples: |
+      - Send me more information
+      - Can you send me more details?
+      - I need more info
+
+  - intent: why_calling
+    examples: |
+      - Why are you calling me?
+      - What's this call about?
+      - Why did you call?
+
+  - intent: other_projects
+    examples: |
+      - I'm working on other projects
+      - I have other projects
+      - I'm busy with other projects
+
+  - intent: dont_own_business
+    examples: |
+      - I don't own a business
+      - I don't have a business
+      - I'm not a business owner
+
+  - intent: what_do_you_do
+    examples: |
+      - What do you do?
+      - What services do you offer?
+      - What is your business about?
+
+  - intent: finished_video
+    examples: |
+      - OK, I’m done.
+      - I’m finished.
+      - That was interesting.
+      - I finished the video.
+      - I’m done watching.
+      - The video is done.
+      - I’m done with the video.
+      - That video was really good.
+      - That video was nice.
+      - That video was interesting.
+      - Hey, I’m finished.
+      - Hey, the video is finished.
+      - Ok, I finished the video.
+      - Yeah, that was great.
+      - The video is finished.
+      - I’ve seen all I need to.
+      - I don’t need to finish watching this.
+      - Ok, I’m finished.
+      - I’m done.
+      - Ok.
+      - Good.
+      - Wow.
+      - That's impressive.
+      - Oh, you guys do a very good job.
+      - Cool, what's next?
+      - That was nice.
+      - So what can you do for us?
+      - What do you guys offer?
+      - Cool.
+      - Can I see your services?
+      - That was interesting.
+      - Very Impressive.
+      - Nice job.
+
+  - intent: select_service
+    examples: |
+      - I need web design
+      - Can you help with application development?
+      - I am looking for digital marketing services
+      - Do you offer animation services?
+      - I need branding services
+      - Can you provide a virtual assistant?
+      - I need help with email marketing
+      - Do you offer graphic design services?
+      - I need local SEO services
+      - Can you help with advertising?
+      - I need a logo design
+      - Do you offer social media marketing?
+      - I need SEO services
+
+  - intent: need_help
+    examples: |
+      - I need help
+      - Can you assist me?
+      - I’m looking for support
+      - Help me with this
+      - Assistance needed
+      - I’m stuck, can you help?
+
+  - intent: confirm_service
+    examples: |
+      - That’s the service I need
+      - Yes, that’s what I want
+      - This aligns with my goals
+      - That’s perfect
+      - I agree with this choice
+
+  - intent: ask_pricing
+    examples: |
+      - What’s the cost?
+      - How much does it cost?
+      - Can you tell me the pricing?
+      - Is there a price list?
+      - What are the charges?
+
+  - intent: completed_task
+    examples: |
+      - Task done
+      - I’ve completed it
+      - All set with that
+      - What’s next?
+      - I’m ready to move on
+      - Finished with the task
+
+  - intent: schedule_callback
+    examples: |
+      - Can we talk later?
+      - Schedule a call
+      - Follow up with me
+      - Let’s arrange a call
+      - Can you call me back?
+      - Set a time for another call
+
+  - intent: general_small_talk
+    examples: |
+      - How’s the weather?
+      - What’s going on?
+      - Tell me something fun
+      - Let’s chat for a moment
+      - Any fun plans today?
+      - How’s life treating you?
+
+  - intent: gatekeeper
+    examples: |
+      - Can I speak to the owner?
+      - Is the manager available?
+      - Who is in charge here?
+
+  - intent: incorrect_number
+    examples: |
+      - I think you have the wrong number
+      - This isn’t the right number
+      - You’ve called the wrong person
+
+  - intent: driving
+    examples: |
+      - I’m driving right now
+      - Can’t talk, I’m driving
+      - I’m on the road
+
+  - intent: busy
+    examples: |
+      - I’m busy right now
+      - Can’t talk, I’m in a meeting
+      - I’m occupied at the moment
+
+  - intent: reschedule
+    examples: |
+      - Can we reschedule?
+      - Let’s set another time
+      - Can we talk later?
+
+  - intent: finished_task
+    examples: |
+      - I’m done with the task
+      - Task completed
+      - Finished the task
+
+  - intent: inquire_specific_service
+    examples: |
+      - Tell me about your web design services
+      - What do you offer in digital marketing?
+      - Can you explain your SEO services?
+
+  - intent: end_call
+    examples: |
+      - I have to go now
+      - Let’s end this call
+      - Goodbye
+
+  - intent: ask_about_business
+    examples: |
+      - How’s your business doing?
+      - Any challenges in your business?
+      - What’s your business focus?
+
+  - intent: objection_response
+    examples: |
+      - I’m not sure about this
+      - I have some concerns
+      - This doesn’t seem right for us
+
+  - intent: recommend_services
+    examples: |
+      - What services do you recommend?
+      - Can you suggest something for us?
+      - What would you advise?
+
+  - intent: watch_video
+    examples: |
+      - Let’s watch a video
+      - Show me a video
+      - Can you play a video?
+
+  - intent: pause_conversation
+    examples: |
+      - Let’s pause for a moment
+      - Can we take a break?
+      - I need a moment
+
+  - intent: ask_for_expertise
+    examples: |
+      - What’s your expertise?
+      - Can you tell me about your skills?
+      - What are you good at?
