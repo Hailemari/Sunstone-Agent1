@@ -1,3 +1,7 @@
 boto3
 moto
 vocode
+rasa==3.6.20
+mattermostwrapper==2.2
+setuptools==65.5.1
+dotenv
