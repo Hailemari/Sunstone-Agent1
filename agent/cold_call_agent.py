@@ -8,6 +8,8 @@ from rasa.core.interpreter import RasaNLUInterpreter
 from dotenv import load_dotenv
 import asyncio
 
+from response_handler import handle_responses
+
 # SignalWire credentials
 load_dotenv()
 
@@ -60,27 +62,21 @@ def handle_voice_request():
     return response
 
 async def handle_conversation():
-    """Handle the conversation using Rasa."""
+    """Handle the conversation using Rasa and gTTS."""
+    print("Conversation started. Listening for user responses...")
+
     while True:
-        # Simulate playing the message and recording the response
-        print("Listening for user response...")
-        response = transcribe_audio('response.mp3').lower()
-        if response:
-            responses = await agent.handle_text(response)
-            for r in responses:
-                # Determine which audio file to play based on the response
-                if "greeting" in r["text"]:
-                    play_audio_from_s3("greeting.mp3")
-                elif "service inquiry" in r["text"]:
-                    play_audio_from_s3("service_inquiry.mp3")
-                elif "callback scheduled" in r["text"]:
-                    play_audio_from_s3("callback_scheduled.mp3")
-                elif "politics" in r["text"]:
-                    play_audio_from_s3("small_talk_politics.mp3")
-                elif "weather" in r["text"]:
-                    play_audio_from_s3("small_talk_weather.mp3")
-                else:
-                    play_audio_from_s3("small_talk_general.mp3")
+        # Simulate receiving user input via audio
+        user_input = transcribe_audio("response.mp3").lower()
+        print(f"User said: {user_input}")
+
+        if user_input:
+            # Get Rasa's response
+            responses = await agent.handle_text(user_input)
+
+            # Process responses and play corresponding audio
+            handle_responses(responses, play_audio_from_s3)
+
 
 def main():
     """Main function to run the cold call agent."""

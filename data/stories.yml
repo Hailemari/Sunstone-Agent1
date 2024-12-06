@@ -116,3 +116,73 @@ stories:
     steps:
       - intent: general_small_talk
       - action: utter_general_small_talk
+
+  - story: ask about business
+    steps:
+      - intent: ask_about_business
+      - action: utter_ask_about_business
+
+  - story: ask for expertise
+    steps:
+      - intent: ask_for_expertise
+      - action: utter_ask_for_expertise
+
+  - story: busy
+    steps:
+      - intent: busy
+      - action: utter_busy
+
+  - story: driving
+    steps:
+      - intent: driving
+      - action: utter_driving
+
+  - story: end call
+    steps:
+      - intent: end_call
+      - action: utter_end_call
+
+  - story: finished task
+    steps:
+      - intent: finished_task
+      - action: utter_finished_task
+
+  - story: gatekeeper
+    steps:
+      - intent: gatekeeper
+      - action: utter_gatekeeper
+
+  - story: incorrect number
+    steps:
+      - intent: incorrect_number
+      - action: utter_incorrect_number
+
+  - story: inquire specific service
+    steps:
+      - intent: inquire_specific_service
+      - action: utter_inquire_specific_service
+
+  - story: objection response
+    steps:
+      - intent: objection_response
+      - action: utter_objection_response
+
+  - story: pause conversation
+    steps:
+      - intent: pause_conversation
+      - action: utter_pause_conversation
+
+  - story: recommend services
+    steps:
+      - intent: recommend_services
+      - action: utter_recommend_services
+
+  - story: reschedule
+    steps:
+      - intent: reschedule
+      - action: utter_reschedule
+
+  - story: watch video
+    steps:
+      - intent: watch_video
+      - action: utter_watch_video

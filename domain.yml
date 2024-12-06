@@ -110,6 +110,12 @@ responses:
     - text: "What specific expertise are you looking for in a partner?"
   utter_need_help:
     - text: "Of course! What specific assistance do you need?"
+  utter_confirm_service:
+    - text: "That's the service I need."
+  utter_ask_pricing:
+    - text: "What’s the cost?"
+  utter_completed_task:
+    - text: "Task done."
 
 slots:
   lead_name:
