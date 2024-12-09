@@ -3,4 +3,5 @@ myenv/
 rasa-env/
 todo
 images/
-starter.py
+agent_env/
+whisper.cpp/
