@@ -6,40 +6,35 @@ from pydub import AudioSegment
 from rasa.core.agent import Agent
 
 class AIVoiceAgent:
-    def __init__(self, rasa_model_path: str, aws_bucket: str = None, initial_message: str = None):
+    def __init__(self, rasa_model_path, initial_message=None):
         self.logger = logging.getLogger(__name__)
-        self.aws_bucket = aws_bucket
-        self.s3_client = boto3.client('s3') if aws_bucket else None
         self.initial_message = initial_message
         self.agent = self.load_rasa_model(rasa_model_path)
 
-    def load_rasa_model(self, model_path: str) -> Agent:
+    def load_rasa_model(self, model_path):
         self.logger.info(f"Loading Rasa model from {model_path}...")
         try:
             agent = Agent.load(model_path)
             self.logger.info("Rasa model loaded successfully.")
             return agent
         except Exception as e:
-            self.logger.error(f"Failed to load Rasa model from {model_path}: {e}")
+            self.logger.error(f"Failed to load Rasa model: {e}")
             raise
 
-    async def respond(self, human_input: str) -> str:
-        print("HUMAN_INPUT", type(human_input))
+    async def respond(self, human_input):
         self.logger.info(f"Processing input: {human_input}")
         try:
             responses = await self.agent.handle_text(human_input)
-            print("responses", responses)
             if responses:
                 response_text = responses[0]['text']
                 self.logger.info(f"Rasa response: {response_text}")
                 return response_text
-            
             self.logger.warning("No response from Rasa model.")
             return "I didn't understand that. Could you please repeat?"
-        
         except Exception as e:
             self.logger.error(f"Error processing Rasa input: {e}")
             return "Sorry, I'm experiencing some technical difficulties."
+
 
     def get_pre_recorded_audio(self, response_text: str) -> AudioSegment:
         # Mapping responses to audio files

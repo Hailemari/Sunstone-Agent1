@@ -5,3 +5,4 @@ todo
 images/
 agent_env/
 whisper.cpp/
+venv/

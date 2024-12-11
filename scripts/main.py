@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from dotenv import load_dotenv
+
 
 from voice_agent import AIVoiceAgent
 from call_manager import AIConversation
@@ -13,8 +13,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def main():
-    # Load environment variables
-    load_dotenv()
 
     # Configuration parameters
     config = {
