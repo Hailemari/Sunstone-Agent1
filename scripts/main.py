@@ -21,7 +21,7 @@ def main():
         'SIGNALWIRE_SPACE_URL': "sunstone.signalwire.com",
         'SIGNALWIRE_PHONE_NUMBER': "+18336529066",
         'CUSTOMER_PHONE': "+18777797248",
-        'WHISPER_LIB': "/home/hailemariam/Sunstone/ai_cold_call_agent/libwhisper.so",
+        'WHISPER_LIB': "/home/hailemariam/Sunstone/ai_cold_call_agent/libwhisper.so.1.7.2",
         'WHISPER_MODEL': "/home/hailemariam/Sunstone/ai_cold_call_agent/whisper.tiny.bin",
         'RASA_MODEL_PATH': "/home/hailemariam/Sunstone/ai_cold_call_agent/models/20241206-090817-cruel-interval.tar.gz",
         'USE_AWS': False
@@ -37,7 +37,8 @@ def main():
         if not config[key]:
             logger.error(f"Missing required configuration: {key}")
             return
-
+    print("Type of whisper lib", type(config['WHISPER_LIB']))
+    print("Type of whisper model", type(config['WHISPER_MODEL']))
     try:
         # Initialize AI Conversation
         ai_conversation = AIConversation(

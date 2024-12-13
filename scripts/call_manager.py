@@ -1,40 +1,83 @@
+import os
 import logging
 import asyncio
+import subprocess
 from io import BytesIO
 from loguru import logger
 from pydub import AudioSegment
 from signalwire.rest import Client
 from vocode.turn_based.input_device.microphone_input import MicrophoneInput
 from vocode.turn_based.output_device.speaker_output import SpeakerOutput
-from vocode.turn_based.transcriber.whisper_cpp_transcriber import WhisperCPPTranscriber
 from vocode.turn_based.synthesizer.gtts_synthesizer import GTTSSynthesizer
-from vocode.turn_based.transcriber.whisper_cpp_transcriber import transcribe
 from vocode.turn_based.turn_based_conversation import TurnBasedConversation
 
 from voice_agent import AIVoiceAgent
 
-new_agent = AIVoiceAgent("../models/20241206-090817-cruel-interval.tar.gz")
+new_agent = AIVoiceAgent("/home/hailemariam/Sunstone/ai_cold_call_agent/models/20241206-090817-cruel-interval.tar.gz")
 
 class CustomTurnBasedConversation(TurnBasedConversation):
+    def clean_transcription(self, transcription: str) -> str:
+        # Remove timestamps, [BLANK_AUDIO], and any non-verbal tags
+        lines = transcription.split('\n')
+        cleaned_lines = [line.split('] ')[-1].strip() for line in lines if '] ' in line and not line.endswith('[BLANK_AUDIO]')]
+        cleaned_transcription = ' '.join(cleaned_lines).strip()
+        return cleaned_transcription
+
     def transcribe(self, audio_segment: AudioSegment) -> str:
         print('TRANSCRIBER CALLED:')
-        print('AUDIO SEGMENT LEGNTH', len(audio_segment))
-        if isinstance(self.transcriber, WhisperCPPTranscriber):
-            print('entered')
-            try:
-                transcription, _ = transcribe(
-                    self.transcriber.whisper,
-                    self.transcriber.params,
-                    self.transcriber.ctx,
-                    audio_segment,
-                )
-                print('Transcription:', transcription)
-            except Exception as e:
-                logger.error(f"Error during transcription: {e}")
-                print(f"Error during transcription: {e}")
-        else:
-            raise TypeError("transcriber is not an instance of WhisperCPPTranscriber")
+        print('AUDIO SEGMENT LENGTH:', len(audio_segment))
+
+        # Define path to export audio to the 'audio' folder
+        audio_folder = os.path.join(os.getcwd(), 'audio')
+        os.makedirs(audio_folder, exist_ok=True)  # Ensure 'audio' folder exists
+        audio_path = os.path.join(audio_folder, 'recorded_audio.wav')
+        converted_audio_path = os.path.join(audio_folder, 'converted_audio.wav')
+
+        # Export the audio segment as a WAV file
+        try:
+            audio_segment.export(audio_path, format="wav")
+            print(f"Audio file saved at: {audio_path}")
+        except Exception as e:
+            logger.error(f"Failed to export audio file: {e}")
+            return ""
+
+        # Convert the audio file to the required format using ffmpeg
+        try:
+            command = [
+                "ffmpeg", "-i", audio_path, "-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le", converted_audio_path
+            ]
+            subprocess.run(command, check=True)
+            print(f"Converted audio file saved at: {converted_audio_path}")
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to convert audio file: {e.stderr}")
+            return ""
+
+        # Use whisper.cpp command to transcribe the audio
+        try:
+            whisper_path = os.path.join(os.getcwd(), 'whisper.cpp/build/bin/main')
+            model_path = os.path.join(os.getcwd(), 'whisper.cpp/models/ggml-base.en.bin')
+            command = f"{whisper_path} -m {model_path} -f {converted_audio_path}"
+            print(f"Running command: {command}")
+            
+            # Run the whisper.cpp command to transcribe the audio
+            result = subprocess.run(command, shell=True, capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"Whisper transcription failed: {result.stderr}")
+                print(f"Whisper transcription failed: {result.stderr}")
+                return ""
+            
+            print('RESULT ---------------------------------- ', result)
+            transcription = result.stdout.strip()
+            print('Transcription:', transcription)
+            cleaned_transcription = self.clean_transcription(transcription)
+            print('Cleaned Transcription:', cleaned_transcription)
+            return cleaned_transcription
         
+        except Exception as e:
+            logger.error(f"Error during whisper transcription: {e}")
+            print(f"Error during whisper transcription: {e}")
+            return ""
+    
     def synthesize(self, text) -> AudioSegment:
         if isinstance(self.synthesizer, GTTSSynthesizer):
             tts = self.synthesizer.gTTS(text)
@@ -44,11 +87,10 @@ class CustomTurnBasedConversation(TurnBasedConversation):
             return AudioSegment.from_mp3(audio_file)  # type: ignore
         else:
             raise TypeError("synthesizer is not an instance of GTTSSynthesizer")
+
     async def start_speech_and_listen(self):
-        # Custom behavior before starting speech
         logger.info("Custom behavior before starting speech")
 
-        # Start listening
         if isinstance(self.input_device, MicrophoneInput):
             self.input_device.start_listening()
             print("LISTENING")
@@ -56,14 +98,8 @@ class CustomTurnBasedConversation(TurnBasedConversation):
         else:
             raise TypeError("input_device is not an instance of MicrophoneInput")
 
-        # Custom behavior after starting speech
-        logger.info("Custom behavior after starting speech")
-
     async def end_speech_and_respond(self):
-        # Custom behavior before transcription
         logger.info("Custom behavior before transcription")
-
-        # End listening and get the audio segment
         if isinstance(self.input_device, MicrophoneInput):
             await asyncio.sleep(10)  
             audio_segment = self.input_device.end_listening()
@@ -74,65 +110,33 @@ class CustomTurnBasedConversation(TurnBasedConversation):
         else:
             raise TypeError("input_device is not an instance of MicrophoneInput")
 
-        # Transcribe the human input
         human_input = self.transcribe(audio_segment)
         print("HUMAN_INPUT", human_input)
         logger.info(f"Transcription: {human_input}")
 
-        # Custom behavior after transcription
+        if not human_input or human_input.isspace():
+            logger.info("No valid input detected, skipping response.")
+            return
+
         logger.info("Custom behavior after transcription")
 
-        # Get the agent's response
         agent_response = await new_agent.respond(human_input)
+        if human_input.strip() == agent_response.strip():
+            logger.error("Agent response is identical to user input, skipping output.")
+            return
+
         print("Agent response", agent_response)
         logger.info(f"Agent response: {agent_response}")
 
-        # Custom behavior before synthesizing response
         logger.info("Custom behavior before synthesizing response")
-
-        # Synthesize the agent's response
         synthesized_response = self.synthesize(agent_response)
-
-        # Custom behavior after synthesizing response
         logger.info("Custom behavior after synthesizing response")
 
-        # Send the synthesized response to the output device
         if isinstance(self.output_device, SpeakerOutput):
             self.output_device.send_audio(synthesized_response)
         else:
             raise TypeError("output_device is not an instance of SpeakerOutput")
-        
-    
 
-
-    # async def start_conversation(self, max_turns=10):
-    #     for turn in range(max_turns):
-    #         try:
-    #             logger.info(f"Starting conversation turn {turn + 1}")
-    #             self.input_device.start_listening()
-    #             await asyncio.sleep(10)  
-    #             audio_segment = self.input_device.end_listening()
-                
-    #             logger.info(f"Audio segment duration: {audio_segment.duration_seconds} seconds")
-
-    #             human_input = self.transcriber.transcribe(audio_segment)
-    #             print("HUMAN INPUT", human_input)
-    #             logger.info(f"Transcription: {human_input}")
-
-    #             if not human_input:
-    #                 print("EMPYT HUMAN INPUT")
-    #                 logger.warning("Transcription is empty, skipping this turn.")
-    #                 continue
-
-    #             agent_response = await self.agent.respond(human_input)
-    #             logger.info(f"Agent response: {agent_response}")
-
-    #             synthesized_response = self.synthesizer.synthesize(agent_response)
-    #             self.output_device.send_audio(synthesized_response)
-
-    #         except Exception as e:
-    #             logger.error(f"Error during conversation turn: {e}")
-    #             break
 
 class AIConversation:
     def __init__(self, PROJECT_ID: str, API_TOKEN: str, SPACE_URL: str, signalwire_phone_number: str):
@@ -153,44 +157,24 @@ class AIConversation:
             self.logger.error(f"Failed to place call to {customer_phone}: {e}")
             raise
 
-    async def handle_call_flow(
-        self, 
-        customer_phone: str, 
-        whisper_lib: str, 
-        whisper_model: str, 
-        rasa_model_path: str, 
-        use_aws: bool = False
-    ):
+    async def handle_call_flow(self, customer_phone: str, whisper_lib: str, whisper_model: str, rasa_model_path: str, use_aws: bool = False):
         self.logger.info(f"Starting AI Voice Agent for customer {customer_phone}...")
 
         try:
-            # Place the initial call
-            # self.make_call(customer_phone, webhook_url="http://192.168.8.103:5000/webhook")
-
-            # Initialize conversation components
             input_device = MicrophoneInput.from_default_device()
             output_device = SpeakerOutput.from_default_device()
-            transcriber = WhisperCPPTranscriber(
-                libname=whisper_lib, 
-                fname_model=whisper_model
-            )
-            agent = AIVoiceAgent(
-                rasa_model_path=rasa_model_path, 
-                initial_message="Hello Marc"
-            )
+            agent = AIVoiceAgent(rasa_model_path=rasa_model_path, initial_message="Hello Marc")
             synthesizer = GTTSSynthesizer()
 
-            # Create conversation instance
             conversation = CustomTurnBasedConversation(
                 input_device=input_device,
-                transcriber=transcriber,
+                transcriber=None,  # Not used anymore
                 agent=agent,
                 synthesizer=synthesizer,
                 output_device=output_device
             )
 
-            # Main conversation loop
-            max_turns = 10  # Prevent infinite loop
+            max_turns = 10  
             turn_count = 0
 
             while turn_count < max_turns:
@@ -208,5 +192,4 @@ class AIConversation:
             self.logger.info("Gracefully shutting down AI Voice Agent.")
         except Exception as e:
             self.logger.error(f"Unexpected error in conversation: {e}")
-            
             

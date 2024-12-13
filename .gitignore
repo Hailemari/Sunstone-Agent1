@@ -6,3 +6,4 @@ images/
 agent_env/
 whisper.cpp/
 venv/
+prompt.txt

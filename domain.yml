@@ -122,20 +122,28 @@ slots:
     type: text
     mappings:
       - type: from_text
+        conditions:
+          - not_contains: "[BLANK_AUDIO]"
   lead_website:
     type: text
     mappings:
       - type: from_text
+        conditions:
+          - not_contains: "[BLANK_AUDIO]"
   selected_service:
     type: text
     mappings:
       - type: from_intent
         intent: select_service
         value: selected_service
+        conditions:
+          - not_contains: "[BLANK_AUDIO]"
   callback_time:
     type: text
     mappings:
       - type: from_text
+        conditions:
+          - not_contains: "[BLANK_AUDIO]"
 
 session_config:
   session_expiration_time: 60

@@ -13,12 +13,11 @@ pipeline:
     min_ngram: 1
     max_ngram: 4
   - name: DIETClassifier
-    epochs: 100
-  - name: EntitySynonymMapper
-  - name: ResponseSelector
-    epochs: 100
+    epochs: 200 # Increase training epochs for better accuracy
+    constrain_similarities: true # Prevents similar responses being matched
   - name: FallbackClassifier
-    threshold: 0.3
+    threshold: 0.4 # Increase threshold for fallback intent
+    ambiguity_threshold: 0.1 # Better handles overlapping intents
 
 # Configuration for Rasa Core.
 policies:
