@@ -1,0 +1,26 @@
+# Exclude virtual environments
+venv/
+env/
+agent_env/
+
+# Exclude Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Exclude version control directories
+.git/
+.gitignore
+
+# Exclude build artifacts
+build/
+dist/
+*.egg-info
+
+# Exclude Docker-related files
+Dockerfile
+docker-compose.yml
+
+# Exclude other temporary files
+*.log
+*.tmp

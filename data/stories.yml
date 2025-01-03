@@ -1,188 +1,277 @@
 version: "3.1"
+
 stories:
-  - story: greet and ask about project
+  - story: greet user and ask about industry
     steps:
       - intent: greet
       - action: utter_greet
       - intent: positive_response
       - action: utter_positive_response
+      - action: utter_ask_industry
 
-  - story: deny and ask about project
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: negative_response
-      - action: utter_negative_response
-
-  - story: who are you
+  - story: user asks who are you
     steps:
       - intent: who_are_you
       - action: utter_who_are_you
 
-  - story: what do you want
+  - story: user asks what do you want
     steps:
       - intent: what_do_you_want
       - action: utter_what_do_you_want
 
-  - story: not interested
+  - story: user not interested
     steps:
       - intent: not_interested
       - action: utter_not_interested
 
-  - story: don't have time
+  - story: user does not have time
     steps:
       - intent: dont_have_time
       - action: utter_dont_have_time
 
-  - story: too expensive
+  - story: user says too expensive
     steps:
       - intent: too_expensive
       - action: utter_too_expensive
 
-  - story: need to think
+  - story: user needs to think
     steps:
       - intent: need_to_think
       - action: utter_need_to_think
 
-  - story: send info
+  - story: user asks to send info
     steps:
       - intent: send_info
       - action: utter_send_info
 
-  - story: why calling
+  - story: user asks why are you calling
     steps:
       - intent: why_calling
       - action: utter_why_calling
 
-  - story: other projects
+  - story: user mentions other projects
     steps:
       - intent: other_projects
       - action: utter_other_projects
 
-  - story: don't own business
+  - story: user does not own a business
     steps:
       - intent: dont_own_business
       - action: utter_dont_own_business
 
-  - story: what do you do
+  - story: user asks what do you do
     steps:
       - intent: what_do_you_do
       - action: utter_what_do_you_do
 
-  - story: finished video
+  - story: user finishes watching the video
     steps:
       - intent: finished_video
       - action: utter_finished_video
 
-  - story: select service
+  - story: user selects a service
     steps:
       - intent: select_service
-      - action: utter_service_instructions_computer
-      - action: utter_service_instructions_phone
+      - action: utter_select_service
       - intent: confirm_service
       - action: utter_confirm_service
 
-  - story: ask pricing
-    steps:
-      - intent: ask_pricing
-      - action: utter_ask_pricing
-
-  - story: need help with a service
+  - story: user needs help
     steps:
       - intent: need_help
       - action: utter_need_help
 
-  - story: task completed and proceed
+  - story: user asks about pricing
+    steps:
+      - intent: ask_pricing
+      - action: utter_pricing_info
+
+  - story: user confirms task completion
     steps:
       - intent: completed_task
-      - action: utter_completed_task
+      - action: utter_task_completed
 
-  - story: pricing after service selection
+  - story: user requests website information
     steps:
-      - intent: select_service
-      - action: utter_service_instructions_computer
-      - action: utter_service_instructions_phone
-      - intent: ask_pricing
-      - action: utter_ask_pricing
+      - intent: website_inquiry
+      - action: utter_website_info
 
-  - story: schedule a callback
-    steps:
-      - intent: dont_have_time
-      - action: utter_dont_have_time
-      - intent: schedule_callback
-      - action: utter_schedule_callback
-
-  - story: general small talk
-    steps:
-      - intent: general_small_talk
-      - action: utter_general_small_talk
-
-  - story: ask about business
-    steps:
-      - intent: ask_about_business
-      - action: utter_ask_about_business
-
-  - story: ask for expertise
-    steps:
-      - intent: ask_for_expertise
-      - action: utter_ask_for_expertise
-
-  - story: busy
-    steps:
-      - intent: busy
-      - action: utter_busy
-
-  - story: driving
-    steps:
-      - intent: driving
-      - action: utter_driving
-
-  - story: end call
-    steps:
-      - intent: end_call
-      - action: utter_end_call
-
-  - story: finished task
-    steps:
-      - intent: finished_task
-      - action: utter_finished_task
-
-  - story: gatekeeper
+  - story: user interacts with gatekeeper
     steps:
       - intent: gatekeeper
-      - action: utter_gatekeeper
+      - action: utter_gatekeeper_response_1
 
-  - story: incorrect number
+  - story: user asks for clarification
     steps:
-      - intent: incorrect_number
-      - action: utter_incorrect_number
+      - intent: clarification_request
+      - action: utter_clarification_request
 
-  - story: inquire specific service
+  - story: user requests a voicemail drop
     steps:
-      - intent: inquire_specific_service
-      - action: utter_inquire_specific_service
+      - intent: voicemail_drop
+      - action: utter_voicemail_drop
 
-  - story: objection response
+  - story: user responds to rebuttals
     steps:
-      - intent: objection_response
-      - action: utter_objection_response
+      - intent: rebuttal_response
+      - action: utter_rebuttal_response
 
-  - story: pause conversation
+  - story: user provides rebuttal for Q1
     steps:
-      - intent: pause_conversation
-      - action: utter_pause_conversation
+      - intent: rebuttal_specific
+      - action: utter_rebuttal_q1
 
-  - story: recommend services
+  - story: user provides rebuttal for Q3 & Q4
     steps:
-      - intent: recommend_services
-      - action: utter_recommend_services
+      - intent: rebuttal_specific
+      - action: utter_rebuttal_q3_q4
 
-  - story: reschedule
+  - story: follow up with the user
     steps:
-      - intent: reschedule
-      - action: utter_reschedule
+      - intent: follow_up
+      - action: utter_follow_up
 
-  - story: watch video
+  - story: gatekeeper challenge
     steps:
-      - intent: watch_video
-      - action: utter_watch_video
+      - intent: gatekeeper_challenge
+      - action: utter_gatekeeper_response_2
+
+  - story: user says sorry, what was that
+    steps:
+      - intent: clarification_request
+      - action: utter_sorry_what_was_that
+
+  - story: user says say that again
+    steps:
+      - intent: clarification_request
+      - action: utter_say_that_again
+
+  - story: user says I didn’t catch that
+    steps:
+      - intent: clarification_request
+      - action: utter_i_didnt_catch_that
+
+  - story: user says sorry, one more time
+    steps:
+      - intent: clarification_request
+      - action: utter_sorry_one_more_time
+
+  - story: user says what was that
+    steps:
+      - intent: clarification_request
+      - action: utter_what_was_that
+
+  - story: user says I missed that
+    steps:
+      - intent: clarification_request
+      - action: utter_i_missed_that
+
+  - story: user says pardon me
+    steps:
+      - intent: clarification_request
+      - action: utter_pardon_me
+
+  - story: call ends with voicemail
+    steps:
+      - intent: voicemail_drop
+      - action: utter_incoming_call_voicemail
+
+  - story: provide website info
+    steps:
+      - intent: website_inquiry
+      - action: utter_website_info
+
+  - story: handle gatekeeper 1
+    steps:
+      - intent: gatekeeper
+      - action: utter_gatekeeper_response_1
+
+  - story: handle gatekeeper 2
+    steps:
+      - intent: gatekeeper
+      - action: utter_gatekeeper_response_2
+
+  - story: handle gatekeeper 3
+    steps:
+      - intent: gatekeeper
+      - action: utter_gatekeeper_response_3
+
+  - story: handle gatekeeper 4
+    steps:
+      - intent: gatekeeper
+      - action: utter_gatekeeper_response_4
+
+  - story: handle rebuttal part 1
+    steps:
+      - intent: rebuttal_response
+      - action: utter_rebuttal_1
+
+  - story: handle rebuttal part 2
+    steps:
+      - intent: rebuttal_response
+      - action: utter_rebuttal_2
+
+  - story: handle rebuttal part 3
+    steps:
+      - intent: rebuttal_response
+      - action: utter_rebuttal_3
+
+  - story: handle rebuttal part 4
+    steps:
+      - intent: rebuttal_response
+      - action: utter_rebuttal_4
+
+  - story: handle rebuttal part 5
+    steps:
+      - intent: rebuttal_response
+      - action: utter_rebuttal_5
+
+  - story: user provides Sony website
+    steps:
+      - intent: website_inquiry
+      - action: utter_sony_website
+
+  - story: user provides BCR website
+    steps:
+      - intent: website_inquiry
+      - action: utter_bcr_website
+
+  - story: user provides Yummy Cookies website
+    steps:
+      - intent: website_inquiry
+      - action: utter_yummy_cookies_website
+
+  - story: user provides Burby’s website
+    steps:
+      - intent: website_inquiry
+      - action: utter_burbys_website
+
+  - story: user provides WBRF website
+    steps:
+      - intent: website_inquiry
+      - action: utter_wbrf_website
+
+  - story: user provides 24-7 Auto website
+    steps:
+      - intent: website_inquiry
+      - action: utter_auto_website
+
+  - story: user provides KPR Music website
+    steps:
+      - intent: website_inquiry
+      - action: utter_kpr_music_website
+
+  - story: user provides Klaxxon website
+    steps:
+      - intent: website_inquiry
+      - action: utter_klaxxon_website
+
+  - story: user provides FBI website
+    steps:
+      - intent: website_inquiry
+      - action: utter_fbi_website
+
+  - story: user provides Google website
+    steps:
+      - intent: website_inquiry
+      - action: utter_google_website

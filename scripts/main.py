@@ -1,9 +1,6 @@
 import asyncio
 import logging
-
-
-from voice_agent import AIVoiceAgent
-from call_manager import AIConversation
+from scripts.call_manager import AIConversation
 
 # Configure logging
 logging.basicConfig(
@@ -12,7 +9,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def main():
+async def main():
 
     # Configuration parameters
     config = {
@@ -21,24 +18,10 @@ def main():
         'SIGNALWIRE_SPACE_URL': "sunstone.signalwire.com",
         'SIGNALWIRE_PHONE_NUMBER': "+18336529066",
         'CUSTOMER_PHONE': "+18777797248",
-        'WHISPER_LIB': "/home/hailemariam/Sunstone/ai_cold_call_agent/libwhisper.so.1.7.2",
-        'WHISPER_MODEL': "/home/hailemariam/Sunstone/ai_cold_call_agent/whisper.tiny.bin",
-        'RASA_MODEL_PATH': "/home/hailemariam/Sunstone/ai_cold_call_agent/models/20241206-090817-cruel-interval.tar.gz",
-        'USE_AWS': False
+        'RASA_MODEL_PATH': "./models/20241219-002619-daring-director.tar.gz",
+        'WEBHOOK_URL': "https://ee13-198-44-138-112.ngrok-free.app/webhook"
     }
 
-    # Validate required configurations
-    required_keys = [
-        'SIGNALWIRE_PROJECT_ID', 'SIGNALWIRE_API_TOKEN', 
-        'SIGNALWIRE_SPACE_URL', 'SIGNALWIRE_PHONE_NUMBER', 
-        'CUSTOMER_PHONE'
-    ]
-    for key in required_keys:
-        if not config[key]:
-            logger.error(f"Missing required configuration: {key}")
-            return
-    print("Type of whisper lib", type(config['WHISPER_LIB']))
-    print("Type of whisper model", type(config['WHISPER_MODEL']))
     try:
         # Initialize AI Conversation
         ai_conversation = AIConversation(
@@ -47,20 +30,24 @@ def main():
             SPACE_URL=config['SIGNALWIRE_SPACE_URL'],
             signalwire_phone_number=config['SIGNALWIRE_PHONE_NUMBER']
         )
+        
+        # Make the call and get the call SID
+        call_sid = ai_conversation.make_call(
+            customer_phone=config['CUSTOMER_PHONE'],
+            webhook_url=config['WEBHOOK_URL']
+        )
 
+        # Wait for the call to be answered (I need to implement a mechanism to detect this)
+        # For simplicity, I'll just wait for a few seconds
+        await asyncio.sleep(10)
         # Run the async conversation
-        asyncio.run(
-            ai_conversation.handle_call_flow(
-                customer_phone=config['CUSTOMER_PHONE'],
-                whisper_lib=config['WHISPER_LIB'],
-                whisper_model=config['WHISPER_MODEL'],
-                rasa_model_path=config['RASA_MODEL_PATH'],
-                use_aws=config['USE_AWS']
-            )
+        await ai_conversation.handle_call_flow(
+            customer_phone=config['CUSTOMER_PHONE'],
+            rasa_model_path=config['RASA_MODEL_PATH']
         )
 
     except Exception as e:
         logger.error(f"Unexpected error in main execution: {e}")
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

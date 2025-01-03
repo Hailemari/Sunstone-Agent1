@@ -1,0 +1,107 @@
+version: "3.1"
+
+rules:
+  - rule: Greet the user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Ask about the lead's industry
+    steps:
+      - intent: ask_industry
+      - action: utter_ask_industry
+
+  - rule: Ask about a recent purchase
+    steps:
+      - intent: ask_recent_purchase
+      - action: utter_ask_recent_purchase
+
+  - rule: Ask for a quick website check
+    steps:
+      - intent: ask_quick_check
+      - action: utter_ask_quick_check
+
+  - rule: Ask about the lead's business needs
+    steps:
+      - intent: ask_business_needs
+      - action: utter_ask_business_needs
+
+  - rule: Schedule a call for web design
+    steps:
+      - intent: schedule_call_web_design
+      - action: utter_schedule_call_web_design
+
+  - rule: Schedule a call for mobile app development
+    steps:
+      - intent: schedule_call_mobile_app
+      - action: utter_schedule_call_mobile_app
+
+  - rule: Schedule a call for digital marketing
+    steps:
+      - intent: schedule_call_digital_marketing
+      - action: utter_schedule_call_digital_marketing
+
+  - rule: Schedule a call for animation
+    steps:
+      - intent: schedule_call_animation
+      - action: utter_schedule_call_animation
+
+  - rule: Schedule a call for virtual assistance
+    steps:
+      - intent: schedule_call_virtual_assistance
+      - action: utter_schedule_call_virtual_assistance
+
+  - rule: Schedule a call for branding
+    steps:
+      - intent: schedule_call_branding
+      - action: utter_schedule_call_branding
+
+  - rule: Schedule a call for email marketing
+    steps:
+      - intent: schedule_call_email_marketing
+      - action: utter_schedule_call_email_marketing
+
+  - rule: Schedule a call for web development
+    steps:
+      - intent: schedule_call_web_development
+      - action: utter_schedule_call_web_development
+
+  - rule: Confirm call back time
+    steps:
+      - intent: confirm_call_back_time
+      - action: utter_confirm_call_back_time
+
+  - rule: Ask for the lead's name
+    steps:
+      - intent: ask_name
+      - action: utter_ask_name
+
+  - rule: Provide website navigation instructions
+    steps:
+      - intent: ask_website_navigation
+      - action: utter_website_navigation
+
+  - rule: Transfer to manager
+    steps:
+      - intent: transfer_to_manager
+      - action: utter_transfer_to_manager
+
+  - rule: Handle voicemail
+    steps:
+      - intent: leave_voicemail
+      - action: utter_voicemail
+
+  - rule: Ask for gatekeeper
+    steps:
+      - intent: ask_gatekeeper
+      - action: utter_ask_gatekeeper
+
+  - rule: Handle unclear response
+    steps:
+      - intent: unclear_response
+      - action: utter_unclear_response
+
+  - rule: Handle domain inquiry
+    steps:
+      - intent: ask_domain
+      - action: utter_domain_inquiry

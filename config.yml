@@ -1,29 +1,58 @@
 version: "3.1"
 
-# Configuration for Rasa NLU.
-language: en
-
+# NLU Pipeline Configuration
 pipeline:
   - name: WhitespaceTokenizer
+    # Splits the user's input into words based on whitespace
   - name: RegexFeaturizer
+    # Detects patterns such as email, phone numbers, or dates
   - name: LexicalSyntacticFeaturizer
+    # Provides syntactic features like part-of-speech tagging
   - name: CountVectorsFeaturizer
+    analyzer: "word"
+    # Extracts word-based count vectors for the NLU model
   - name: CountVectorsFeaturizer
-    analyzer: char_wb
+    analyzer: "char_wb"
     min_ngram: 1
     max_ngram: 4
+    # Extracts character-based count vectors for better recognition of misspellings
   - name: DIETClassifier
-    epochs: 200 # Increase training epochs for better accuracy
-    constrain_similarities: true # Prevents similar responses being matched
+    epochs: 100
+    constrain_similarities: true
+    # Multi-intent recognition, supports entity extraction
+  - name: EntitySynonymMapper
+    # Maps entities with multiple names to a single entity name
+  - name: ResponseSelector
+    epochs: 100
+    # Selects the most appropriate response based on context
   - name: FallbackClassifier
-    threshold: 0.4 # Increase threshold for fallback intent
-    ambiguity_threshold: 0.1 # Better handles overlapping intents
+    threshold: 0.3
+    # Provides fallback response if confidence is below 0.3
 
-# Configuration for Rasa Core.
+# Policies to handle the conversation flow
 policies:
   - name: MemoizationPolicy
-  - name: TEDPolicy
+    max_history: 5
+    # Memorizes exact turns to improve response prediction
+
+  - name: RulePolicy
+    core_fallback_threshold: 0.3
+    enable_fallback_prediction: true
+    # Handles rule-based responses and fallback behavior
+
+  - name: UnexpecTEDIntentPolicy
     max_history: 5
     epochs: 100
-  - name: RulePolicy
-assistant_id: 20241205-164923-cyan-nectarine
+    # Handles out-of-scope or unexpected intents
+
+  - name: TEDPolicy
+    max_history: 10
+    epochs: 100
+    constrain_similarities: true
+    # Used to predict the next action using deep learning
+
+# Language Configuration
+language: en
+
+# Assistant ID (Optional)
+assistant_id: 20241218-174633-sienna-tap

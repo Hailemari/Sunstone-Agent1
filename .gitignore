@@ -7,3 +7,5 @@ agent_env/
 whisper.cpp/
 venv/
 prompt.txt
+.rasa/
+laravel-crm/
